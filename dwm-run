@@ -30,23 +30,24 @@ xinitcfg="$HOME/.config/xinit"
 test -f "$xinitcfg/u/$(uname)"       && . "$xinitcfg/u/$(uname)"
 test -f "$xinitcfg/host/$(hostname)" && . "$xinitcfg/host/$(hostname)"
 
-/usr/local/bin/dwm 2>>.dwm_log &
-
-# exit X when dwmstatus (or failsafe xterm) is killed
+# starts status bar or terminal
 if [ $(command -v slstatus) ]; then
-    slstatus
+    slstatus &
 elif [ $(command -v dwmstatus) ]; then
-    dwmstatus
+    dwmstatus &
 elif [ $(command -v st) ]; then
-    st
+    st &
 elif [ $(command -v urxvt) ]; then
-    urxvt
+    urxvt &
 elif [ $(command -v uxterm) ]; then
-    uxterm -ls -T Failsafe -geometry 80x24-0-0
+    uxterm -ls -T Failsafe -geometry 80x24-0-0 &
 elif [ $(command -v rxvt) ]; then
-    rxvt
+    rxvt &
 elif [ $(command -v xterm) ]; then
-    xterm -ls -T Failsafe -geometry 80x24-0-0
+    xterm -ls -T Failsafe -geometry 80x24-0-0 &
 elif [ $(command -v gnome-terminal) ]; then
-    gnome-terminal
+    gnome-terminal &
 fi
+
+# start dwm
+/usr/local/bin/dwm 2>>.dwm_log
